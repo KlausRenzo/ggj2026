@@ -10,6 +10,8 @@ using UnityEngine.Serialization;
 public class MaskManager : MonoBehaviour
 {
 	[SerializeField] private float draggingSpeed;
+	private Vector3 showPosition;
+	private Vector3 hidePosition;
 
 	[FormerlySerializedAs("activeMask")] [SerializeField]
 	private MaskBehaviour selector;
@@ -31,19 +33,24 @@ public class MaskManager : MonoBehaviour
 	private void Awake()
 	{
 		targets = this.GetComponentsInChildren<TargetPlaceholder>().ToList();
+		showPosition = this.transform.position;
+		RectTransform rectTransform = ((RectTransform) transform);
+		float width = (rectTransform.anchorMax.x - rectTransform.anchorMin.x) * Screen.width;
+		hidePosition = showPosition + new Vector3(width, 0, 0);
+
+		this.transform.position = hidePosition;
 	}
 
 	[SerializeField] private float dropDistance = 10;
 
 	public TweenerCore<Vector3, Vector3, VectorOptions> Enable()
 	{
-		this.transform.localPosition = new Vector3(400, 0, 0);
-		return this.transform.DOLocalMove(Vector3.zero, 1).Play();
+		return this.transform.DOMove(showPosition, 1).Play();
 	}
 
 	public TweenerCore<Vector3, Vector3, VectorOptions> Disable()
 	{
-		return this.transform.DOLocalMove(new Vector3(400, 0, 0), 1).Play();
+		return this.transform.DOMove(hidePosition, 1).Play();
 	}
 
 	public void Drag(Vector3 delta)

@@ -70,17 +70,18 @@ public class GameManager : MonoBehaviour
 	{
 		switch (State)
 		{
+			
+			
 			case GameState.Answering:
 				State = GameState.Idle;
 				maskManager.Disable()
 							.OnComplete(() => State = GameState.GettingFeedback);
 				break;
-
+			case GameState.Idle:
 			case GameState.GettingFeedback:
-				State = GameState.Idle;
-
+				State = GameState.SelectingNpc;
+				
 				crowdManager.SendNewNpc()
-							.OnComplete(() => State = GameState.SelectingNpc)
 							.OnComplete(NextState);
 				break;
 
@@ -89,15 +90,13 @@ public class GameManager : MonoBehaviour
 				DOTween.Sequence()
 						.Append(maskManager.Enable())
 						.OnComplete(player.StartAnswering)
-						.OnComplete(NextState)
+						.OnComplete(() => State = GameState.Answering)
 						.Play();
 				break;
 			default:	
 				throw new ArgumentOutOfRangeException();
 		}
 	}
-	
-	
 
 	public void OnMaskDropped(TargetPlaceholder selectedTarget)
 	{
