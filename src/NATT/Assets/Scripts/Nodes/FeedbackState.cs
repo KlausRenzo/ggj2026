@@ -14,6 +14,9 @@ public class FeedbackState : StateMachineBehaviour
 		
 		_gameManager.maskManager.ResetPosition();
 
+		_gameManager.captionGroup.Close();
+
+		
 		_gameManager.PlaySound(clip);
 		_gameManager.maskManager.Disable()
 					.OnComplete(()=> animator.SetTrigger("Next"));

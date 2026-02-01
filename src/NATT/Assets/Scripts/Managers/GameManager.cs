@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private GameState _state;
 	public List<BlockDefinition> blocks;
 
+	public UiElement captionGroup;
+
 	public GameState State
 	{
 		get => _state;

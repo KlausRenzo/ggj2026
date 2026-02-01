@@ -1,4 +1,5 @@
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 
 public class AskQuestionState : StateMachineBehaviour
@@ -13,6 +14,9 @@ public class AskQuestionState : StateMachineBehaviour
 		
 		var clip = Random.Range(0, clips.Length);
 		_gameManager.PlaySound(clips[clip]);
+
+		_gameManager.captionGroup.Open();
+		_gameManager.captionGroup.GetComponentInChildren<TextMeshProUGUI>().text = _gameManager.activePhase.question;
 
 		_gameManager.maskManager.Enable()
 					.OnComplete(() => animator.SetTrigger("Next"));
