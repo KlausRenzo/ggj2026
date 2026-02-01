@@ -118,6 +118,6 @@ public class MaskManager : MonoBehaviour
 
 	public void ResetPosition()
 	{
-		selector.transform.DOMove(center.position, returnDuration).Play();
+		selector.transform.DOLocalMove(center.localPosition, returnDuration).Play();
 	}
 }
