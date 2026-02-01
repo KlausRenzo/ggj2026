@@ -1,15 +1,7 @@
-using System;
+using Data;
 using UnityEngine;
 
 public class TargetPlaceholder : MonoBehaviour
 {
-	public TargetType type;
-}
- 
-public enum TargetType
-{
-	Type1,
-	Type2,
-	Type3,
-	Type4,
+	public MaskState state;
 }

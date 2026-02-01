@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using DG.Tweening;
-using Unity.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -59,7 +58,7 @@ public class GameManager : MonoBehaviour
 			case GameState.GettingFeedback:
 				break;
 
-			case GameState.Starting:
+			case GameState.Idle:
 				return;
 			default:
 				throw new ArgumentOutOfRangeException();
@@ -72,29 +71,35 @@ public class GameManager : MonoBehaviour
 		switch (State)
 		{
 			case GameState.Answering:
-				State = GameState.GettingFeedback;
+				State = GameState.Idle;
+				maskManager.Disable()
+							.OnComplete(() => State = GameState.GettingFeedback);
 				break;
 
-			case GameState.Starting:
 			case GameState.GettingFeedback:
-				State = GameState.SelectingNpc;
-				crowdManager.SendNewNpc().OnComplete(NextState);
+				State = GameState.Idle;
+
+				crowdManager.SendNewNpc()
+							.OnComplete(() => State = GameState.SelectingNpc)
+							.OnComplete(NextState);
 				break;
 
 			case GameState.SelectingNpc:
-				State = GameState.Answering;
-				player.StartAnswering();
+				State = GameState.Idle;
+				DOTween.Sequence()
+						.Append(maskManager.Enable())
+						.OnComplete(player.StartAnswering)
+						.OnComplete(NextState)
+						.Play();
 				break;
-			default:
+			default:	
 				throw new ArgumentOutOfRangeException();
 		}
 	}
-}
+	
+	
 
-public enum GameState
-{
-	Starting,
-	SelectingNpc,
-	Answering,
-	GettingFeedback,
+	public void OnMaskDropped(TargetPlaceholder selectedTarget)
+	{
+	}
 }

@@ -5,7 +5,6 @@ using Data;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-
 public class PlayerController : MonoBehaviour
 {
 	[SerializeField] private float dragSpeed;
@@ -48,8 +47,13 @@ public class PlayerController : MonoBehaviour
 	{
 		if (Input.GetMouseButtonUp(0))
 		{
+			if (_gameManager.maskManager.StopDrag())
+			{
+				State = PlayerState.Disabled;
+				return;
+			}
+
 			State = PlayerState.Idle;
-			_gameManager.maskManager.StopDrag();
 			return;
 		}
 
