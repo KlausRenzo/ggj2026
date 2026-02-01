@@ -95,7 +95,7 @@ public class MaskManager : MonoBehaviour
 	{
 		selector.transform.DOKill();
 
-		selector.transform.position += delta * baseDraggingSpeed / (_gameManager.burnout * malusDraggingSpeed);
+		selector.transform.position += delta * (baseDraggingSpeed - _gameManager.burnout * malusDraggingSpeed);
 		var maxDistance = radius * 1.2f;
 
 		selector.transform.localPosition = Vector3.ClampMagnitude(selector.transform.localPosition, maxDistance);

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Data;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +12,7 @@ public class MaskBehaviour : MonoBehaviour
 
 	[SerializeField] private Image _image;
 	[SerializeField] private Sprite _defaultSprite;
-	[SerializeField] private Dictionary<MaskState, Sprite> _sprites;
+	[SerializeField] private List<SpriteState> _sprites;
 
 	private void Start()
 	{
@@ -19,11 +21,18 @@ public class MaskBehaviour : MonoBehaviour
 
 	public void SetSpriteToEmotion(MaskState state)
 	{
-		_image.sprite = _sprites[state];
+		_image.sprite = _sprites.First(x => x.state == state).sprite;
 	}
 
 	public void ResetSprite()
 	{
 		_image.sprite = _defaultSprite;
 	}
+}
+
+[Serializable]
+public class SpriteState
+{
+	public Sprite sprite;
+	public MaskState state;
 }
